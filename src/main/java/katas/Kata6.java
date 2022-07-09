@@ -1,8 +1,10 @@
 package katas;
 
+import model.BoxArt;
 import model.Movie;
 import util.DataUtil;
 
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -14,6 +16,13 @@ public class Kata6 {
     public static String execute() {
         List<Movie> movies = DataUtil.getMovies();
 
-        return "someUrl";
+        return movies.stream()
+                .map(movie -> movie.getBoxarts())
+                .flatMap(boxArts -> boxArts.stream())
+                .reduce((FirstBox, SecondBox) ->
+                    FirstBox.getWidth() > SecondBox.getWidth() && FirstBox.getHeight() > SecondBox.getHeight() ? FirstBox: SecondBox
+                ).orElseThrow()
+                .getUrl();
+        //        return "someUrl";
     }
 }
